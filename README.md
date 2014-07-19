@@ -13,7 +13,6 @@ ServoCalibrate -- find and save the center point of your servo
 
 ServoTester -- test servos
 
-
 Setup
 -----
 
