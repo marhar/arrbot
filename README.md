@@ -9,15 +9,15 @@ Utilities
 
 arrterm -- wrapper for terminal-based tty connection to arduino board
 
-servo_calibrate -- find the center point of your servo
+ServoCalibrate -- find and save the center point of your servo
 
-servo_tester -- test servos
+ServoTester -- test servos
 
 
 Setup
 -----
 
-For servo_calibrate and servo_tester:
+For ServoCalibrate and ServoTester:
 
 servo ground (black or brown): arduino GND
 servo power (red):  arduino RAW

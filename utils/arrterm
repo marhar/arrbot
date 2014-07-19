@@ -7,7 +7,7 @@
 
 baud=115200
 
-if $OSNAME. = linux.; then
+if test $OSNAME. = linux.; then
     # need to confirm this on linux
     portmask=/dev/tty.usb
 else

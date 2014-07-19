@@ -1,13 +1,5 @@
 //----------------------------------------------------------------------
-// Servo Calibrator
-//
-// You want to find the low, high, and midpoints of your continuous
-// rotation servo.
-//
-//  low  = value where servo spins the fastest clockwise
-//  high = value where servo spins the fastest counter clockwise
-//  mid  = value where servo is stopped
-//
+// ServoTester -- test your servos
 //
 // upload this sketch, and then run either
 //
@@ -17,40 +9,44 @@
 //     (use serial port specified in Arduino menu tools/Serial port)
 //     (quit screen with: ctrl-A ctrl-\)
 //
-// most important commands:
+// commands:
+//   v -- variable sweep mode
+//   c -- center at 1500
 //   j -- subtract one from position
 //   k -- add one to position
-//
-//   A -- set low position from current position
-//   S -- ditto mid
-//   D -- ditto high
-//
-//   a -- jump to low position
-//   s -- ditto mid
-//   d -- ditto high
+//   J -- subtract ten from position
+//   K -- add ten to position
 //
 //----------------------------------------------------------------------
 
 #include <Servo.h> 
+
+#define LO 1000    // lowest servo value we can safely set
+#define HI 2000    // highest servo value we can safely set
+
+#define UP 1       // sweeping up
+#define DN 0       // sweeping down
+
+#define SWEEP_STEP 10 // sweep step increment
+
+//----------------------------------------------------------------------
+// globals
+//----------------------------------------------------------------------
  
 Servo serv;                 // servo object
 char spinners[] = "|/-\\";  // eye candy: shows pgm is running
-
 int count=0;                // counter for eye candy
 
-int hi = 2000;              // high value, where servo is fastest CCW
-int mid = 1500;             // mid value,  where servo is stopped
-int lo = 1000;              // low value,  where servo is fastest CW
-int curr = mid;
+int sweeping = 1;           // are we in sweep mode?
+int dir = DN;               // direction of sweep
+int curr = (LO + HI)/2;     // current position
 
 //----------------------------------------------------------------------
 // display -- show the current values
 //----------------------------------------------------------------------
 
 void display() {
-  Serial.print("lo: "); Serial.print(lo);
-  Serial.print(" mid: "); Serial.print(mid);
-  Serial.print(" hi: "); Serial.print(hi);
+  Serial.print("sweeping: "); Serial.print(sweeping);
   Serial.print(" curr: "); Serial.print(curr);
   Serial.print(" "); Serial.print(spinners[count++ % sizeof(spinners)]);
   Serial.print("                 \r");
@@ -65,26 +61,51 @@ void setup() {
 //----------------------------------------------------------------------
 void loop() {
   
-  int cmd;
+  int cmd;             // keystroke command from user
+  int oldcurr = curr;
+  
   if (Serial.available() > 0) {
     cmd = Serial.read();
     Serial.read();
-  }
   
-  switch (cmd) {
-    case 'a': curr = lo; break;
-    case 's': curr = mid; break;
-    case 'd': curr = hi; break;
-    case 'A': lo  = curr; break;
-    case 'S': mid = curr; break;
-    case 'D': hi  = curr; break;
-    case 'j': curr -= 1; break;
-    case 'k': curr += 1; break;
-    case 'J': curr -= 10; break;
-    case 'K': curr += 10; break;
+    switch (cmd) {
+      case 'v': sweeping = 1;                   break;
+      case 'j': sweeping = 0; curr -= 1;        break;
+      case 'k': sweeping = 0; curr += 1;        break;
+      case 'J': sweeping = 0; curr -= 10;       break;
+      case 'K': sweeping = 0; curr += 10;       break;
+      case 'h': sweeping = 0; curr = HI;        break;
+      case 'l': sweeping = 0; curr = LO;        break;
+      case 'c': sweeping = 0; curr = (HI+LO)/2; break;
+    }
   }
   
   display();
-  serv.writeMicroseconds(curr);
-  delay(100);
+  if (sweeping) {
+    if (dir == DN) {
+      curr -= SWEEP_STEP;
+      if (curr < LO) {
+        curr = LO;
+        dir = UP;
+      }
+    }
+    else {
+      curr += SWEEP_STEP;
+      if (curr > HI) {
+        curr = HI;
+        dir = DN;
+      }
+    }
+  }
+  else {
+    // not sweeping, just ensure LO <= curr <= HI
+    if (curr < LO)
+      curr = LO;
+    else if (curr > HI)
+      curr = HI;
+  }
+  
+  if (oldcurr != curr)
+    serv.writeMicroseconds(curr);
+  delay(10);
 }
