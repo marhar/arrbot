@@ -1,0 +1,36 @@
+#!/bin/sh
+#-----------------------------------------------------------------------
+# arduterm -- serial connection to an arduino or other usb device
+#
+# this uses screen.  control-A control-backslash to quit.
+#-----------------------------------------------------------------------
+
+baud=115200
+
+if $OSNAME. = linux.; then
+    # need to confirm this on linux
+    portmask=/dev/tty.usb
+else
+    # assume we're on a mac
+    portmask=/dev/tty.usb
+fi
+
+n=`ls -C1 $portmask*|wc -l`
+
+if test $n -eq 1; then
+    port=`ls -C1 $portmask*`
+    echo using port: $port
+    echo control-A control-backslash to quit
+    screen $port $baud
+    exit 0
+elif test $n -eq 0; then
+    echo searching for port using mask: $portmask
+    echo no modem devices found
+    echo have you hooked up your arduino\?
+    exit 1
+else
+    echo modem devices found: $n
+    echo modem choices:
+    ls -C1 $portmask*
+    exit 2
+fi
