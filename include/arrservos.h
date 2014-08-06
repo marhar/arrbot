@@ -19,4 +19,45 @@ void arrbot_servocfg::init() {
   this->reverse = 1;
 }
 
+//----------------------------------------------------------------------
+// arrbot_servo -- scale and issue servo commands
+//----------------------------------------------------------------------
+struct arrbot_servo
+{
+  Servo myservo;           // servo we're controlling
+  int   mythrust;          // thrust value for our servo (-100..100)
+  arrbot_servocfg* mycfg;  // our servo config
+
+  void thrust(int t);
+  void attach(int pin, arrbot_servocfg* pc);
+};
+
+
+//----------------------------------------------------------------------
+// attach -- just like Servo::attach, but includes calibration data
+//----------------------------------------------------------------------
+void arrbot_servo::attach(int pin, arrbot_servocfg* pc)
+{
+  myservo.attach(pin);
+  mycfg = pc;
+  mythrust = 0;
+}
+
+//----------------------------------------------------------------------
+// thrust -- set the percentage for the motor, -100% .. 100%
+//----------------------------------------------------------------------
+void arrbot_servo::thrust(int t)
+{
+  int lo;       // low value
+  int usec;     // calculated value to send to servo
+  float sf;     // scaling factor mapping -100..100 to lo..hi 
+
+  mythrust = t;
+
+  lo = mycfg->mid - mycfg->span;
+  sf = (2.0 * mycfg->span) / 200.0;
+  usec = t * sf + lo + mycfg->span;
+  myservo.writeMicroseconds(usec);
+}
+
 #endif

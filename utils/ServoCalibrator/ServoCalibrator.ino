@@ -1,13 +1,11 @@
 //----------------------------------------------------------------------
 // Servo Calibrator
 //
-// You want to find the low, high, and midpoints of your continuous
-// rotation servo.
+// You want to find the midpoint and span of your continuous
+// rotation servos.
 //
-//  low  = value where servo spins the fastest clockwise
-//  high = value where servo spins the fastest counter clockwise
 //  mid  = value where servo is stopped
-//
+//  span = offset for maximum servo travel.  [mid-span..mid+span]
 //
 // upload this sketch, and then run either
 //
@@ -17,50 +15,105 @@
 //     (use serial port specified in Arduino menu tools/Serial port)
 //     (quit screen with: ctrl-A ctrl-\)
 //
-// most important commands:
-//   j -- subtract one from position
-//   k -- add one to position
+// commands:
 //
-//   A -- set low position from current position
-//   S -- ditto mid
-//   D -- ditto high
+//   1 -- left servo
+//   2 -- right servo
 //
-//   a -- jump to low position
-//   s -- ditto mid
-//   d -- ditto high
+//   a -- subtract 1 from mid
+//   s -- add      1 to   mid
+//   d -- subtract 1 from span
+//   f -- add      1 to   span
+//   g -- reverse
+//
+//   r -- read cfg
+//   w -- write cfg
+//   i -- initialize cfg to defaults
+//
+//   , -- jump to lo position
+//   . -- jump to mid
+//   / -- jump to hi
 //
 //----------------------------------------------------------------------
 
 #include <Servo.h> 
- 
-Servo serv;                 // servo object
+#include <EEPROM.h>
+#include "/arrbot/arrservos.h"
+#include "/arrbot/arrheader.h"
+
+arrbot_cfg cfg;
+
+Servo lserv;       // left servo
+Servo rserv;       // right servo
+Servo *cserv;      // current servo
+
+#define P(x) Serial.print(x)
+#define P2(a, b) P(a); P(b)
+#define PV(x) P(x); P(" ");
+//#define PV(x) P(" " #x ": "); P(x);
+
 char spinners[] = "|/-\\";  // eye candy: shows pgm is running
+int  spinnerc=0;            // counter for eye candy
 
-int count=0;                // counter for eye candy
-
-int hi = 2000;              // high value, where servo is fastest CCW
-int mid = 1500;             // mid value,  where servo is stopped
-int lo = 1000;              // low value,  where servo is fastest CW
-int curr = mid;
 
 //----------------------------------------------------------------------
-// display -- show the current values
+// display -- display the current state of things
 //----------------------------------------------------------------------
 
+char *m1, *m2, *m3;
 void display() {
-  Serial.print("lo: "); Serial.print(lo);
-  Serial.print(" mid: "); Serial.print(mid);
-  Serial.print(" hi: "); Serial.print(hi);
-  Serial.print(" curr: "); Serial.print(curr);
-  Serial.print(" "); Serial.print(spinners[count++ % sizeof(spinners)]);
-  Serial.print("                 \r");
+  PV(cfg.magic);
+  PV(cfg.version);
+  PV(cfg.sz);
+  PV(cfg.cksum);
+  P(m1);
+  PV(cfg.l.mid);
+  PV(cfg.l.span);
+  PV(cfg.l.reverse);
+  P(m2);
+  PV(cfg.r.mid);
+  PV(cfg.r.span);
+  PV(cfg.r.reverse);
+  P(m3);
+  P(spinners[spinnerc++%4]);
+  P("\r");
+}
+
+int lcurr;    // left servo current value
+int rcurr;    // right servo current value
+
+
+//----------------------------------------------------------------------
+// actleft -- set left servo active
+//----------------------------------------------------------------------
+void actleft()
+{
+  cserv = &lserv;
+  m1="<";m2="> ";m3=" ";
+}
+
+//----------------------------------------------------------------------
+// actright -- set right servo active
+//----------------------------------------------------------------------
+void actright()
+{
+  cserv = &rserv;
+  m1=" ";m2=" <";m3=">";
 }
 
 //----------------------------------------------------------------------
 void setup() {
   Serial.begin(115200);
-  serv.attach(9);
+  lserv.attach(9);
+  rserv.attach(10);
+  cfg.init();
+  lcurr = cfg.l.mid;
+  rcurr = cfg.r.mid;
+  actleft();
 }
+
+#define MNS 1000    // minimum allowed servo value
+#define MXS 2000    // maximum allowed servo value
 
 //----------------------------------------------------------------------
 void loop() {
@@ -72,6 +125,20 @@ void loop() {
   }
   
   switch (cmd) {
+    case '1': actleft();                             break; // left active
+    case '2': actright();                            break; // right active
+    case 'i': cfg.init();                            break; // sane initialize
+    case 'w': cfg.write();                           break; // write cfg to eeprom
+    case 'r': cfg.read();                            break; // read cfg from eeprom
+    case 'a': if (cfg. NEED CURR z->mid - z->span > MNS) z->mid--;  break;
+    case 's': if (z->mid + z->span < MXS) z->mid++;  break;
+    case 'd': if (z->mid - z->span > MNS) z->span--; break;
+    case 'f': if (z->mid + z->span < MXS) z->span++; break;
+    case 'g': z->reverse = -z->reverse;              break;
+    
+
+
+/*
     case 'a': curr = lo; break;
     case 's': curr = mid; break;
     case 'd': curr = hi; break;
@@ -82,9 +149,11 @@ void loop() {
     case 'k': curr += 1; break;
     case 'J': curr -= 10; break;
     case 'K': curr += 10; break;
+*/
   }
   
   display();
-  serv.writeMicroseconds(curr);
-  delay(100);
+  lserv.writeMicroseconds(lcurr);
+  rserv.writeMicroseconds(rcurr);
+  delay(20);
 }

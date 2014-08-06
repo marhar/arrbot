@@ -17,6 +17,7 @@
 //
 //----------------------------------------------------------------------
 
+#include <Arduino.h>
 #include <Servo.h> 
 #include <EEPROM.h>
 #include "/arrbot/arrservos.h"
@@ -25,15 +26,14 @@
 #define UP 1       // sweeping up
 #define DN 0       // sweeping down
 
-arrbot_cfg cfg;                         // the arrbot configuration
-
 #define P(x)  Serial.print(x)
 #define NL() P(F("\r\n"))
 #define P3(a,b)  P(F(a)); P(b); NL()
 
+arrbot_cfg cfg;                         // the arrbot configuration
 
-Servo lserv;                // left servo
-Servo rserv;                // right servo
+arrbot_servo lserv;            // left servo
+arrbot_servo rserv;            // right servo
 
 char spinners[] = "|/-\\";  // eye candy: shows pgm is running
 int count=0;                // counter for eye candy
@@ -44,11 +44,15 @@ int dir = DN;               // direction of sweep
 //----------------------------------------------------------------------
 // display -- show the current values
 //----------------------------------------------------------------------
+void display(void)
+{
+  P("asdf\r");
+}
 
 //----------------------------------------------------------------------
 // fatal -- show fatal error message
 //----------------------------------------------------------------------
-void fatal(char *s)
+void fatal(const char s[])
 {
     for (;;) {
       P(s); NL();
@@ -62,20 +66,20 @@ void setup() {
   cfg.init();
 
   if (cfg.magic != ARRBOT_MAGIC) {
-      fatal(F("Missing ArrBot Header in EEPROM"));
+      fatal("Missing ArrBot Header in EEPROM");
   }
   if (cfg.version != ARRBOT_HVERSION) {
-      fatal(F("Wrong ArrBot version number in EEPROM");
+      fatal("Wrong ArrBot version number in EEPROM");
   }
   if (cfg.sz != sizeof(cfg)) {
-      fatal(F("Wrong ArrBot size EEPROM");
+      fatal("Wrong ArrBot size EEPROM");
   }
   
-  lserv.attach(9);
-  rserv.attach(10);
+  lserv.attach(9, &cfg.l);
+  rserv.attach(10, &cfg.r);
   
-  lserv.percent(0);
-  rserv.percoent(0);
+  lserv.thrust(0);
+  rserv.thrust(0);
 }
 
 
@@ -90,6 +94,7 @@ void doreverse(void)
 void loop() {
   
   int cmd;             // keystroke command from user
+  int curr = 0;
   int oldcurr = curr;
   
   if (Serial.available() > 0) {
@@ -133,8 +138,8 @@ void loop() {
   }
   
   if (oldcurr != curr) {
-    lserv.percent(curr);
-    rserv.percent(curr);
+    lserv.thrust(curr);
+    rserv.thrust(curr);
   }
   delay(10);
 }
