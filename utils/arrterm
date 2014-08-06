@@ -22,6 +22,7 @@ if test $n -eq 1; then
     echo using port: $port
     echo control-A control-backslash to quit
     screen $port $baud
+    stty sane
     exit 0
 elif test $n -eq 0; then
     echo searching for port using mask: $portmask
