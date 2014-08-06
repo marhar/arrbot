@@ -13,8 +13,8 @@ struct arrbot_cfg
     unsigned int version;  // version of this config header
     unsigned int sz;       // size of this header
     unsigned int cksum;    // checksum of data following checksum
-    arrbot_servo  l;       // left servo
-    arrbot_servo  r;       // right servo
+    arrbot_servocfg l;     // left servo
+    arrbot_servocfg r;     // right servo
     
     void read();           // read header from eprom
     void write();          // write header to eprom

@@ -1,6 +1,6 @@
 #ifndef _ARSERVOS_H
 #define _ARSERVOS_H
-struct arrbot_servo
+struct arrbot_servocfg
 {
     int mid;     // midpoint of servo, where it doesn't move the wheel 
     int span;    // how much mid can be {inc,dec}remented for full travel
@@ -13,7 +13,7 @@ struct arrbot_servo
 // init -- initialize with some reasonable values (1000/1500/2000)
 //----------------------------------------------------------------------
 
-void arrbot_servo::init() {
+void arrbot_servocfg::init() {
   this->mid = 1500;
   this->span = 500;
   this->reverse = 1;
