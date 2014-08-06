@@ -50,7 +50,9 @@ void setup()
   P("initializing configuration..."); NL();
   cfg.init();
 
-  cfg.l.mid = 1500;  // CHANGE THESE VALUES FOR YOUR PARTICULAR SERVOS
+  // CHANGE THESE VALUES FOR YOUR PARTICULAR SERVOS
+
+  cfg.l.mid = 1500;
   cfg.l.span = 500;
   cfg.l.reverse = 1;
   
