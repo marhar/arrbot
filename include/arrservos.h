@@ -56,7 +56,7 @@ void arrbot_servo::thrust(int t)
 
   lo = mycfg->mid - mycfg->span;
   sf = (2.0 * mycfg->span) / 200.0;
-  usec = t * sf + lo + mycfg->span;
+  usec = mycfg->reverse * t * sf + lo + mycfg->span;
   myservo.writeMicroseconds(usec);
 }
 

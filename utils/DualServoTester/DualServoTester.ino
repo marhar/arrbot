@@ -28,12 +28,16 @@
 
 #define P(x)  Serial.print(x)
 #define NL() P(F("\r\n"))
+#define P2(a, b) P(a); P(b)
 #define P3(a,b)  P(F(a)); P(b); NL()
 
 arrbot_cfg cfg;                         // the arrbot configuration
 
 arrbot_servo lserv;            // left servo
 arrbot_servo rserv;            // right servo
+
+int curr = 0;                  // current set value (percentage)
+int oldcurr = 0;               // previous value
 
 char spinners[] = "|/-\\";  // eye candy: shows pgm is running
 int count=0;                // counter for eye candy
@@ -44,9 +48,10 @@ int dir = DN;               // direction of sweep
 //----------------------------------------------------------------------
 // display -- show the current values
 //----------------------------------------------------------------------
-void display(void)
-{
-  P("asdf\r");
+void display() {
+  P2("sweeping: ", sweeping);
+  P2(" curr: ", curr);
+  P("                   \r");
 }
 
 //----------------------------------------------------------------------
@@ -82,20 +87,10 @@ void setup() {
   rserv.thrust(0);
 }
 
-
-//----------------------------------------------------------------------
-// doreverse -- handle reverse logic
-//----------------------------------------------------------------------
-void doreverse(void)
-{
-}
-
 //----------------------------------------------------------------------
 void loop() {
   
   int cmd;             // keystroke command from user
-  int curr = 0;
-  int oldcurr = curr;
   
   if (Serial.available() > 0) {
     cmd = Serial.read();
@@ -108,7 +103,8 @@ void loop() {
       case 'h': sweeping = 0; curr  = 100;  break;
       case 'l': sweeping = 0; curr  = -100; break;
       case 'c': sweeping = 0; curr   = 0;   break;
-      case 'r': doreverse();                break;
+      case 'r': cfg.l.reverse *= -1; curr+=1; break;
+      case 'R': cfg.r.reverse *= -1; curr+=1; break;
     }
   }
   
@@ -140,6 +136,7 @@ void loop() {
   if (oldcurr != curr) {
     lserv.thrust(curr);
     rserv.thrust(curr);
+    oldcurr = curr;
   }
   delay(10);
 }
