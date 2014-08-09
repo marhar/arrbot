@@ -29,6 +29,7 @@ class ArrNunchuck
     int buttonC;
 
     void init();
+    void init2();
     void update();
 
   private:

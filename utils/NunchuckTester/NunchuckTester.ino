@@ -19,7 +19,7 @@
 #include <Wire.h>
 #include <ArrNunchuck.h>
 
-ArrNunchuck nunchuk = ArrNunchuck();
+ArrNunchuck nunchuk;
 
 void setup()
 {
