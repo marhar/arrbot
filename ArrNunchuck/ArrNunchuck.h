@@ -12,12 +12,12 @@
  *
  */
 
-#ifndef ArduinoNunchuk_H
-#define ArduinoNunchuk_H
+#ifndef ArrNunchuck_h
+#define ArrNunchuck_h
 
 #include <Arduino.h>
 
-class ArduinoNunchuk
+class ArrNunchuck
 {
   public:
     int analogX;

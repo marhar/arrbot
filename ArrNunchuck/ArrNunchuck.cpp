@@ -1,34 +1,40 @@
-/*
- * ArduinoNunchuk.cpp - Improved Wii Nunchuk library for Arduino
- *
- * Copyright 2011-2013 Gabriel Bianconi, http://www.gabrielbianconi.com/
- *
- * Project URL: http://www.gabrielbianconi.com/projects/arduinonunchuk/
- *
- * Based on the following resources:
- *   http://www.windmeadow.com/node/42
- *   http://todbot.com/blog/2008/02/18/wiichuck-wii-nunchuck-adapter-available/
- *   http://wiibrew.org/wiki/Wiimote/Extension_Controllers
- *
- */
+//----------------------------------------------------------------------
+// ArrNunchuck -- ArrBot Nunchuck Library
+//
+// Derived from ArduinoNunchuk by Gabriel Biaconi.
+//
+//----------------------------------------------------------------------
+//
+// ArduinoNunchuk.cpp - Improved Wii Nunchuk library for Arduino
+//
+// Copyright 2011-2013 Gabriel Bianconi, http://www.gabrielbianconi.com/
+//
+// Project URL: http://www.gabrielbianconi.com/projects/arduinonunchuk/
+//
+// Based on the following resources:
+//   http://www.windmeadow.com/node/42
+//   http://todbot.com/blog/2008/02/18/wiichuck-wii-nunchuck-adapter-available/
+//   http://wiibrew.org/wiki/Wiimote/Extension_Controllers
+//
+//----------------------------------------------------------------------
 
 #include <Arduino.h>
 #include <Wire.h>
-#include "ArduinoNunchuk.h"
+#include "ArrNunchuck.h"
 
 #define ADDRESS 0x52
 
-void ArduinoNunchuk::init()
+void ArrNunchuck::init()
 {
   Wire.begin();
 
-  ArduinoNunchuk::_sendByte(0x55, 0xF0);
-  ArduinoNunchuk::_sendByte(0x00, 0xFB);
+  ArrNunchuck::_sendByte(0x55, 0xF0);
+  ArrNunchuck::_sendByte(0x00, 0xFB);
 
-  ArduinoNunchuk::update();
+  ArrNunchuck::update();
 }
 
-void ArduinoNunchuk::update()
+void ArrNunchuck::update()
 {
   int count = 0;
   int values[6];
@@ -41,18 +47,18 @@ void ArduinoNunchuk::update()
     count++;
   }
 
-  ArduinoNunchuk::analogX = values[0];
-  ArduinoNunchuk::analogY = values[1];
-  ArduinoNunchuk::accelX = (values[2] << 2) | ((values[5] >> 2) & 3);
-  ArduinoNunchuk::accelY = (values[3] << 2) | ((values[5] >> 4) & 3);
-  ArduinoNunchuk::accelZ = (values[4] << 2) | ((values[5] >> 6) & 3);
-  ArduinoNunchuk::zButton = !((values[5] >> 0) & 1);
-  ArduinoNunchuk::cButton = !((values[5] >> 1) & 1);
+  ArrNunchuck::analogX = values[0];
+  ArrNunchuck::analogY = values[1];
+  ArrNunchuck::accelX = (values[2] << 2) | ((values[5] >> 2) & 3);
+  ArrNunchuck::accelY = (values[3] << 2) | ((values[5] >> 4) & 3);
+  ArrNunchuck::accelZ = (values[4] << 2) | ((values[5] >> 6) & 3);
+  ArrNunchuck::zButton = !((values[5] >> 0) & 1);
+  ArrNunchuck::cButton = !((values[5] >> 1) & 1);
 
-  ArduinoNunchuk::_sendByte(0x00, 0x00);
+  ArrNunchuck::_sendByte(0x00, 0x00);
 }
 
-void ArduinoNunchuk::_sendByte(byte data, byte location)
+void ArrNunchuck::_sendByte(byte data, byte location)
 {
   Wire.beginTransmission(ADDRESS);
 
