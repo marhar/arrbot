@@ -1,4 +1,4 @@
-////////////////////////////////////////////////////////////////////////
+//----------------------------------------------------------------------
 // NunchuckTester -- test your Nunchuck.
 //
 //  This code does two things:
@@ -7,28 +7,26 @@
 //
 //  Later we will modify this code to save calibration data.
 //
-// This code is based on the excellent Ardui
-////////////////////////////////////////////////////////////////////////
-/*
- * ArduinoNunchukDemo.ino
- 
- *
- * This code is based on Gabriel Biaconi's ArduinoNunchuk project.
- *
- *
- * Copyright 2011-2013 Gabriel Bianconi, http://www.gabrielbianconi.com/
- *
- * Project URL: http://www.gabrielbianconi.com/projects/arduinonunchuk/
- *
- * tidied up an calibration limits
- */
+//  Based on ArduinoNunchukDemo.ino.
+//
+//----------------------------------------------------------------------
+//
+// ArduinoNunchukDemo.ino
+//
+// Copyright 2011-2013 Gabriel Bianconi, http://www.gabrielbianconi.com/
+//
+// Project URL: http://www.gabrielbianconi.com/projects/arduinonunchuk/
+//
+// tidied up an calibration limits
+//
+//----------------------------------------------------------------------
 
 #include <Wire.h>
-#include <ArduinoNunchuk.h>
+#include <ArrNunchuck.h>
 
 #define BAUDRATE 19200
 
-ArduinoNunchuk nunchuk = ArduinoNunchuk();
+ArrNunchuck nunchuk = ArrNunchuck();
 
 void setup()
 {
@@ -106,5 +104,4 @@ void loop()
   px2(minbc, maxbc);
 
   Serial.println();
-  
 }
