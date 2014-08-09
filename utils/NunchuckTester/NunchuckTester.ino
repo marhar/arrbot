@@ -1,9 +1,12 @@
 ////////////////////////////////////////////////////////////////////////
 // NunchuckTester -- test your Nunchuck.
 //
-//  Thi
-
-
+//  This code does two things:
+//    -- shows the current value of your nunchuck controls
+//    -- shows the min/max positions of your nunchuck controls
+//
+//  Later we will modify this code to save calibration data.
+//
 // This code is based on the excellent Ardui
 ////////////////////////////////////////////////////////////////////////
 /*

@@ -2,7 +2,7 @@
 #define _ARHEADER_H
 
 #include <Arduino.h>
-#include "/arrbot/arrservos.h"
+#include "ArrServos.h"
 
 
 #define ARRBOT_MAGIC 0x7261  // magic number for this header ("ar")
