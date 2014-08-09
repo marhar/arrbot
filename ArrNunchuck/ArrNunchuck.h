@@ -20,13 +20,13 @@
 class ArrNunchuck
 {
   public:
-    int analogX;
-    int analogY;
+    int stickX;
+    int stickY;
     int accelX;
     int accelY;
     int accelZ;
-    int zButton;
-    int cButton;
+    int buttonZ;
+    int buttonC;
 
     void init();
     void update();

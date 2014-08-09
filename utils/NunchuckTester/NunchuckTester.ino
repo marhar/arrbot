@@ -10,27 +10,20 @@
 //  Based on ArduinoNunchukDemo.ino.
 //
 //----------------------------------------------------------------------
-//
 // ArduinoNunchukDemo.ino
 //
 // Copyright 2011-2013 Gabriel Bianconi, http://www.gabrielbianconi.com/
-//
 // Project URL: http://www.gabrielbianconi.com/projects/arduinonunchuk/
-//
-// tidied up an calibration limits
-//
 //----------------------------------------------------------------------
 
 #include <Wire.h>
 #include <ArrNunchuck.h>
 
-#define BAUDRATE 19200
-
 ArrNunchuck nunchuk = ArrNunchuck();
 
 void setup()
 {
-  Serial.begin(BAUDRATE);
+  Serial.begin(19200);
   nunchuk.init();
 }
 
@@ -69,29 +62,29 @@ void loop()
 {
   nunchuk.update();
 
-  if (nunchuk.analogX > maxgx) maxgx = nunchuk.analogX;
-  if (nunchuk.analogY > maxgy) maxgy = nunchuk.analogY;
+  if (nunchuk.stickX > maxgx) maxgx = nunchuk.stickX;
+  if (nunchuk.stickY > maxgy) maxgy = nunchuk.stickY;
   if (nunchuk.accelX  > maxax) maxax = nunchuk.accelX;
   if (nunchuk.accelY  > maxay) maxay = nunchuk.accelY;
   if (nunchuk.accelZ  > maxaz) maxaz = nunchuk.accelZ;
-  if (nunchuk.zButton > maxbz) maxbz = nunchuk.zButton;
-  if (nunchuk.cButton > maxbc) maxbc = nunchuk.cButton;
+  if (nunchuk.buttonZ > maxbz) maxbz = nunchuk.buttonZ;
+  if (nunchuk.buttonC > maxbc) maxbc = nunchuk.buttonC;
  
-  if (nunchuk.analogX < mingx) mingx = nunchuk.analogX;
-  if (nunchuk.analogY < mingy) mingy = nunchuk.analogY;
+  if (nunchuk.stickX < mingx) mingx = nunchuk.stickX;
+  if (nunchuk.stickY < mingy) mingy = nunchuk.stickY;
   if (nunchuk.accelX  < minax) minax = nunchuk.accelX;
   if (nunchuk.accelY  < minay) minay = nunchuk.accelY;
   if (nunchuk.accelZ  < minaz) minaz = nunchuk.accelZ;
-  if (nunchuk.zButton < minbz) minbz = nunchuk.zButton;
-  if (nunchuk.cButton < minbc) minbc = nunchuk.cButton;
+  if (nunchuk.buttonZ < minbz) minbz = nunchuk.buttonZ;
+  if (nunchuk.buttonC < minbc) minbc = nunchuk.buttonC;
  
-  px(nunchuk.analogX);
-  px(nunchuk.analogY);
+  px(nunchuk.stickX);
+  px(nunchuk.stickY);
   px(nunchuk.accelX);
   px(nunchuk.accelY);
   px(nunchuk.accelZ);
-  px(nunchuk.zButton);
-  px(nunchuk.cButton);
+  px(nunchuk.buttonZ);
+  px(nunchuk.buttonC);
 
   Serial.print(" -");
   

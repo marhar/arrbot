@@ -28,10 +28,10 @@ void ArrNunchuck::init()
 {
   Wire.begin();
 
-  ArrNunchuck::_sendByte(0x55, 0xF0);
-  ArrNunchuck::_sendByte(0x00, 0xFB);
+  _sendByte(0x55, 0xF0);
+  _sendByte(0x00, 0xFB);
 
-  ArrNunchuck::update();
+  update();
 }
 
 void ArrNunchuck::update()
@@ -47,15 +47,15 @@ void ArrNunchuck::update()
     count++;
   }
 
-  ArrNunchuck::analogX = values[0];
-  ArrNunchuck::analogY = values[1];
-  ArrNunchuck::accelX = (values[2] << 2) | ((values[5] >> 2) & 3);
-  ArrNunchuck::accelY = (values[3] << 2) | ((values[5] >> 4) & 3);
-  ArrNunchuck::accelZ = (values[4] << 2) | ((values[5] >> 6) & 3);
-  ArrNunchuck::zButton = !((values[5] >> 0) & 1);
-  ArrNunchuck::cButton = !((values[5] >> 1) & 1);
+  stickX = values[0];
+  stickY = values[1];
+  accelX = (values[2] << 2) | ((values[5] >> 2) & 3);
+  accelY = (values[3] << 2) | ((values[5] >> 4) & 3);
+  accelZ = (values[4] << 2) | ((values[5] >> 6) & 3);
+  buttonZ = !((values[5] >> 0) & 1);
+  buttonC = !((values[5] >> 1) & 1);
 
-  ArrNunchuck::_sendByte(0x00, 0x00);
+  _sendByte(0x00, 0x00);
 }
 
 void ArrNunchuck::_sendByte(byte data, byte location)
