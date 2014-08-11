@@ -20,8 +20,8 @@
 #include <Arduino.h>
 #include <Servo.h> 
 #include <EEPROM.h>
-#include "/arrbot/arrservos.h"
-#include "/arrbot/arrheader.h"
+#include "ArrServos.h"
+#include "ArrHeader.h"
 
 #define UP 1       // sweeping up
 #define DN 0       // sweeping down

@@ -4,8 +4,8 @@
 
 #include <Servo.h> 
 #include <EEPROM.h>
-#include "/arrbot/arrservos.h"
-#include "/arrbot/arrheader.h"
+#include "ArrServos.h"
+#include "ArrHeader.h"
 
 arrbot_cfg cfg;                         // the arrbot configuration
 
