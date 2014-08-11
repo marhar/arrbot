@@ -58,7 +58,7 @@ void setup()
   
   cfg.r.mid = 1500;
   cfg.r.span = 500;
-  cfg.l.reverse = 1;
+  cfg.r.reverse = 1;
 
   P("setting configuration:"); NL(); NL();
   show_cfg(&cfg);
