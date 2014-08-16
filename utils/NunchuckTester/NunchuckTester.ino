@@ -23,7 +23,7 @@ ArrNunchuck nunchuk;
 
 void setup()
 {
-  Serial.begin(19200);
+  Serial.begin(9600);
   nunchuk.init();
 }
 

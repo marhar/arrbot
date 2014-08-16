@@ -40,7 +40,7 @@ void show_cfg(arrbot_cfg *c)
 //----------------------------------------------------------------------
 void setup()
 {
-  Serial.begin(115200);
+  Serial.begin(9600);
 
   for (int i = 8; i > 0; --i) {
     P("initializing in "); P(i); NL();

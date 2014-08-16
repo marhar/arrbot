@@ -67,7 +67,7 @@ void fatal(const char s[])
 
 //----------------------------------------------------------------------
 void setup() {
-  Serial.begin(115200);
+  Serial.begin(9600);
   cfg.init();
 
   if (cfg.magic != ARRBOT_MAGIC) {

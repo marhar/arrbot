@@ -20,7 +20,6 @@
 #include <nRF24L01.h>
 #include <RF24.h>
 
-/*-----( Declare Constants and Pin Numbers )-----*/
 #define CE_PIN   9
 #define CSN_PIN 10
 
@@ -33,7 +32,8 @@ int led = 13;
 
 void setup()
 {
-  pinMode(led, OUTPUT);     
+  pinMode(led, OUTPUT);
+  radio.setPayloadSize(sizeof(joystick));
   radio.begin();
   radio.openWritingPipe(pipe);
 }

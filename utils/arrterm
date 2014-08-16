@@ -5,7 +5,9 @@
 # this uses screen.  control-A control-backslash to quit.
 #-----------------------------------------------------------------------
 
-baud=115200
+#baud=115200
+#baud=19200
+baud=9600
 
 if test $OSNAME. = linux.; then
     # need to confirm this on linux

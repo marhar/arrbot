@@ -103,7 +103,7 @@ void actright()
 
 //----------------------------------------------------------------------
 void setup() {
-  Serial.begin(115200);
+  Serial.begin(9600);
   lserv.attach(9);
   rserv.attach(10);
   cfg.init();
