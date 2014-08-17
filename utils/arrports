@@ -1,0 +1,21 @@
+#!/bin/sh
+#-----------------------------------------------------------------------
+# arrports -- show port differences on a unix-based system
+#
+# this uses screen.  control-A control-backslash to quit.
+#-----------------------------------------------------------------------
+
+N=/tmp/arrterms-new
+O=/tmp/arrterms-old
+
+if ! test -f $N; then
+    echo INITIALIZING PORT LIST
+    ls /dev/tty.* >$N
+else
+    echo DIFF FROM LAST PORT LIST
+    rm -f $O
+    mv $N $O
+    ls /dev/tty.* >$N
+    diff $O $N
+fi
+
