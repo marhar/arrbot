@@ -20,13 +20,15 @@ proc doread {fd} {
         exit 0
     }
     ##puts line=[llength $line],$line
-    if     {[llength $line] == 1 && [string equal [lindex $line 0] "i"]} {
+    set cmdlen [llength $line]
+    set cmdstr [lindex $line 0]
+    if     {$cmdlen == 1 && [string equal $cmdstr "i"]} {
         # initialization
-        #set mins ""
-        #set maxs ""
-        #set version ""
-        #set current ""
-    } elseif {[llength $line] == 8 && [string equal [lindex $line 0] "n"]} {
+        set mins ""
+        set maxs ""
+        set version ""
+        set current ""
+    } elseif {$cmdlen == 8 && [string equal $cmdstr "n"]} {
         # nunchuck data
         if {[llength $mins] == 0} {
             set mins $line
@@ -65,10 +67,10 @@ proc doread {fd} {
         if {$bz} { .bz configure -bg blue } else { .bz configure -bg lightblue }
         if {$bc} { .bc configure -bg blue } else { .bc configure -bg lightblue }
 
-    } elseif {[llength $line] == 3 && [string equal [lindex $line 0] "v"]} {
+    } elseif {$cmdlen == 3 && [string equal $cmdstr "v"]} {
         # version
         set version $line
-    } elseif {[llength $line] == 2 && [string equal [lindex $line 0] "c"]} {
+    } elseif {$cmdlen == 2 && [string equal $cmdstr "c"]} {
         # current config
         set current $line
     }
