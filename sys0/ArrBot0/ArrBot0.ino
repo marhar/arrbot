@@ -74,6 +74,7 @@ void setup() {
   * NB: payload on client and server must be the same.
   */
   Mirf.payload = 5 * sizeof(int);
+  Mirf.channel = 18*3;
 
  // Write channel and payload config then power up reciver.
  Mirf.config();
@@ -105,6 +106,8 @@ void loop()
  int oldright = right;
  int joystick[5];
 
+ Serial.println();
+
  // does this help to have it here? Not sure.
 //   Mirf.setRADDR((byte *)"serv1");
 
@@ -130,13 +133,13 @@ void loop()
 
      // CRUDE MAPPING from joystick to servos.
      if (joystick[0] < 30) {
-       Serial.println("TURN LEFT");
+       Serial.print(" TURN LEFT ");
          left = LBK; right = RFWD;     // left
         // try to keep left tread from coming off
          left = (3*LHALT + LBK)/4;
      }
      else if (joystick[0] > 200) {
-       Serial.println(">>right>>");
+       Serial.print(" >>right>> ");
        left = LFWD; right = RBK;     // right
         // try to keep right tread from coming off
         right = (3*RHALT + RBK)/4;
@@ -153,12 +156,13 @@ void loop()
      Serial.print("\tl ");
      Serial.print(left);
      Serial.print(",\tr ");
-     Serial.println(right);
+     Serial.print(right);
+     Serial.print(" ");
      nsuccess++;
      Serial.print("Success: ");      
      Serial.print(nsuccess);
      Serial.print(", Fail: ");
-     Serial.println(nfail);
+     Serial.print(nfail);
  }
  else {
    failSinceLastSuccess++;
@@ -167,7 +171,7 @@ void loop()
        Serial.print("Fail: ");
        Serial.print(nfail);
        Serial.print(", success: ");
-       Serial.println(nsuccess);
+       Serial.print(nsuccess);
    }
 //    delay(delayt);
  }

@@ -38,7 +38,7 @@ setup() {
   Serial.begin(9600);
   Serial.println("Start setup.");
 //  delay(10000);
-  nunchuk.init2();
+  nunchuk.init();
   Serial.println("Nunchuk initialized.");
   
   // Setup pins / SPI.
@@ -55,7 +55,7 @@ setup() {
    
   // Write channel and payload config then power up reciver.
   // NB: Make sure channel is legal in your area.
-  // Mirf.channel = 10;
+  Mirf.channel = 18*3;
 
   Mirf.config();
   Mirf.setTADDR((byte *)"serv1");
