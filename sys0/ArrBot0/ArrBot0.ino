@@ -33,12 +33,12 @@
 // Stuff for the servos
 #include <Servo.h> 
 
-#define LBK 1050    // lowest servo value we can safely set
-#define LHALT 1377  // servo value to hold still
-#define LFWD  1700    // highest servo value we can safely set
-#define RBK 1650    // lowest servo value we can safely set
-#define RHALT 1369  // servo value to hold still
-#define RFWD  1050    // highest servo value we can safely set
+#define LBK 1420    // lowest servo value we can safely set
+#define LHALT 1530  // servo value to hold still
+#define LFWD  1740    // highest servo value we can safely set
+#define RBK 1663    // lowest servo value we can safely set
+#define RHALT 1579  // servo value to hold still
+#define RFWD  1393    // highest servo value we can safely set
 
 
 //----------------------------------------------------------------------
@@ -50,6 +50,8 @@ Servo rserv;                 // right wheel servo object
 
 int left = LHALT;
 int right = RHALT;
+
+char * drivestate;
 
 //----------------------------------------------------------------------
 void setup() {
@@ -99,6 +101,7 @@ int nsuccess = 0;
 int nfail = 0;
 int failSinceLastSuccess = 0;
 
+
 //----------------------------------------------------------------------
 void loop() 
 {
@@ -132,7 +135,7 @@ void loop()
      }
 
      // CRUDE MAPPING from joystick to servos.
-     if (joystick[0] < 30) {
+     if (joystick[0] < 70) {
        Serial.print(" TURN LEFT ");
          left = LBK; right = RFWD;     // left
         // try to keep left tread from coming off

@@ -20,4 +20,5 @@
 // declarations for some handy things
 //----------------------------------------------------------------------
 
-extern void countdown(int);
+extern void countdown(int n);
+float mapf(float x, float in_min, float in_max, float out_min, float out_max);

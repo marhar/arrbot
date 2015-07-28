@@ -59,6 +59,8 @@ void print_init()
 {
   // useful for pusing reset without starting gui
   delay(250);
+  Serial.println();
+  Serial.println();
   Serial.println("i");
   delay(250);
   Serial.println("i");
